@@ -1,11 +1,10 @@
-// Import necessary dependencies from React and Axios
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; // Import React and necessary hooks
+import axios from 'axios'; // Import Axios for making HTTP requests
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 
-// Define a functional component called Index
+// Define Index component
 const Index = () => {
-  // Define state variables using the useState hook
+  // Define state variables using useState hook
   const [startRange, setStartRange] = useState(null); // State for start range input
   const [endRange, setEndRange] = useState(null); // State for end range input
   const [algorithmType, setAlgorithmType] = useState(''); // State for algorithm type input
@@ -13,44 +12,39 @@ const Index = () => {
   const [primeRecords, setPrimeRecords] = useState([]); // State for storing prime numbers found
   const [loading, setLoading] = useState(false); // State to manage loading state
 
-  // Initialize navigate from useNavigate hook to handle navigation
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize navigate from useNavigate hook to handle navigation
 
-  // useEffect hook to set initial values for start and end range when the component mounts
   useEffect(() => {
     setStartRange(0);
     setEndRange(0);
-  }, []);
+  }, []); // Set initial values for start and end range when the component mounts
 
   // Function to fetch prime numbers from the backend
   const fetchPrimeNumbers = async () => {
-    // Check if all input fields are filled
     if (!startRange || !endRange || !algorithmType) {
-      console.error('Please fill in all fields');
+      console.error('Please fill in all fields'); // Error message if any input field is empty
       return;
     }
 
     try {
-      setLoading(true); // Set loading to true while fetching data
-      // Send a POST request to the backend API to fetch prime numbers
+      setLoading(true); // Set loading to true while fetching
       const response = await axios.post('http://localhost:3001/api/data', {
         start: parseInt(startRange),
         end: parseInt(endRange),
         algorithm: algorithmType,
       });
-      setLoading(false); // Set loading to false after fetching data
-      // Update state with the count of prime numbers and the prime numbers themselves
-      setPrimeCount(response.data.numPrimes);
-      setPrimeRecords(response.data.primes);
+      setLoading(false); // Set loading to false after fetching
+      setPrimeCount(response.data.numPrimes); // Update prime count
+      setPrimeRecords(response.data.primes); // Update prime records
     } catch (error) {
-      console.error('Error fetching prime numbers:', error);
+      console.error('Error fetching prime numbers:', error); // Log error if fetching fails
       setLoading(false); // Set loading to false in case of error
     }
   };
 
   // Function to handle navigation to prime number records page
   const handleRedirect = () => {
-    navigate('/database');
+    navigate('/database'); // Redirect to '/database' route
   };
 
   // JSX for rendering UI
@@ -109,5 +103,4 @@ const Index = () => {
   );
 };
 
-// Export the Index component as the default export
-export default Index;
+export default Index; // Export Index component as default
